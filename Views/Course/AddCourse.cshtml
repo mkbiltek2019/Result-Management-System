@@ -1,0 +1,291 @@
+﻿@{
+    ViewBag.Title = "AddCourse";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Add Course</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i> Admin</a></li>
+                <li> Courses</li>
+                <li class="active">Add Course</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<section class="section">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h5>Fill the Course info</h5>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        @{
+                            if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger left-icon-alert" role="alert">
+                                    <strong>@ViewBag.Error</strong>
+                                </div>
+                            }
+                            else if (ViewBag.Message != null)
+                            {
+                                <div class="alert alert-success left-icon-alert" role="alert">
+                                    <strong>@ViewBag.Message</strong>
+                                </div>
+                            }
+                        }
+
+                        <form class="form-horizontal" method="post">
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Course Code<span style="color:red;">*</span></label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="Course_code" class="form-control text-uppercase" id="course_code" placeholder="e.g. MAT_111" required="required" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Course Title<span style="color:red;">*</span></label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="Course_title" class="form-control text-capitalize" id="course_title" placeholder="e.g. Mathematics-I" required="required" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Credit Hour<span style="color:red;">*</span></label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="credit_hour" name="Credit_hour" required="required">
+                                        <option value="">Select Credit Hour</option>
+                                        <option value="0">0 Hr</option>
+                                        <option value="0.5">0.5 Hr</option>
+                                        <option value="0.75">0.75 Hr</option>
+                                        <option value="1">1 Hr</option>
+                                        <option value="1.5">1.5 Hr</option>
+                                        <option value="1.75">1.75 Hr</option>
+                                        <option value="2">2 Hr</option>
+                                        <option value="2.5">2.5 Hr</option>
+                                        <option value="2.75">2.75 Hr</option>
+                                        <option value="3">3 hr</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Semester<span style="color:red;">*</span></label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="select_semester" name="Semester" required="required">
+                                        <option value="">Select Semester</option>
+                                        <option value="1">1st Semester</option>
+                                        <option value="2">2nd Semester</option>
+                                        <option value="3">3rd Semester</option>
+                                        <option value="4">4th Semester</option>
+                                        <option value="5">5th Semester</option>
+                                        <option value="6">6th Semester</option>
+                                        <option value="7">7th Semester</option>
+                                        <option value="8">8th Semester</option>
+                                        <option value="9">9th Semester</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Faculty<span style="color:red;">*</span></label>
+                                <div class="col-sm-10">
+                                    <select name="UnderFaculty" class="form-control" id="UnderFaculty" onchange="getDepartment()" required="required">
+                                        <option value="">Select Faculty</option>
+                                        @{  foreach (PRMS.Models.Faculty faculty in ViewBag.faculties)
+                                          {
+
+                                            @Html.Raw("<option value='" + faculty.ShortForm + "'>" + faculty.FacultyName + "</option>");
+
+                                          }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="hiddenDiv">
+                                <label for="default" class="col-sm-2 control-label">Department<span style="color:red;">*</span></label>
+                                <div class="col-sm-10">
+                                    <select name="UnderDepartment" class="form-control" id="UnderDepartment" required="required"></select>
+                                </div>
+                            </div>
+
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <h5>Fill Course Teacher info (Optional)</h5>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Teacher's Faculty</label>
+                                <div class="col-sm-10">
+                                    <select name="TeacherFaculty" class="form-control" id="TeacherFaculty" onchange="getTeacherDepartment()">
+                                        <option value="">Select Faculty</option>
+                                        @{  foreach (PRMS.Models.Faculty faculty in ViewBag.faculties)
+                                          {
+
+                                            @Html.Raw("<option value='" + faculty.ShortForm + "'>" + faculty.FacultyName + "</option>");
+
+                                          }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Department</label>
+                                <div class="col-sm-10">
+                                    <select name="TeacherDepartment" class="form-control" onchange="getTeacherList()" id="TeacherDepartment">
+                                        <option value="">Select Department</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Course Teacher</label>
+                                <div class="col-sm-10">
+                                    <select name="CourseTeacherID" class="form-control" id="CourseTeacherID">
+                                        <option value="">Select Teacher</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" name="submit" class="btn btn-primary">Add Course</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-md-12 -->
+        </div>
+    </div>
+</section>
+
+
+<script>
+    $(document).ready(function () {
+        hiddenDiv.style.visibility = 'hidden';
+        hiddenDiv.style.display = 'none';
+
+
+    });
+
+    function getDepartment() {
+        var e = document.getElementById("UnderFaculty");
+        var val = e.options[e.selectedIndex].value;
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetDepartment")',
+            dataType: 'json',
+            data: 'faculty=' + val,
+            success: function (data) {
+                $("#UnderDepartment").empty();
+                var optDef = new Option("Select Department", "");
+                $("#UnderDepartment").append(optDef);
+                debugger;
+                for (var i = 0; i < data.length; i++) {
+                    var opt = new Option(data[i]);
+                    $("#UnderDepartment").append(opt);
+                }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+        hiddenDiv.style.visibility = 'visible';
+        hiddenDiv.style.display = 'block';
+        Form.fileURL.focus();
+
+    }
+
+    function getTeacherDepartment() {
+        var e = document.getElementById("TeacherFaculty");
+        var val = e.options[e.selectedIndex].value;
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetDepartment")',
+            dataType: 'json',
+            data: 'faculty=' + val,
+            success: function (data) {
+                $("#TeacherDepartment").empty();
+                var optDef = new Option("Select Department", "");
+                $("#TeacherDepartment").append(optDef);
+                debugger;
+                for (var i = 0; i < data.length; i++) {
+                    var opt = new Option(data[i]);
+                    $("#TeacherDepartment").append(opt);
+                }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+    }
+
+    function getTeacherList() {
+        var e = document.getElementById("TeacherFaculty");
+        var val = e.options[e.selectedIndex].value;
+
+        var f = document.getElementById("TeacherDepartment");
+        var val1 = f.options[f.selectedIndex].value;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetTeacherList")',
+            dataType: 'json',
+            data: 'faculty=' + encodeURIComponent(val) + '&department=' + encodeURIComponent(val1),
+            success: function (data) {
+                $("#CourseTeacherID").empty();
+                var optDef = new Option("Select Teacher", "");
+                $("#CourseTeacherID").append(optDef);
+                debugger;
+                for (var i = 0; i < data.length; i++) {
+                    var arr = data[i].split("*");
+                    var opt = new Option(arr[0], arr[1]);
+                    $("#CourseTeacherID").append(opt);
+                }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+    }
+</script>

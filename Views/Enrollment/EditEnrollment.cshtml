@@ -1,0 +1,208 @@
+﻿@{
+    ViewBag.Title = "EditEnrollment";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Edit Student Enrollment</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i> Admin</a></li>
+                <li> Enrollment</li>
+                <li class="active">Edit Student Enrollment</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5>Check the Student Enrollment info</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+
+                    @{ if (ViewBag.message != null)
+                     {
+
+                        <div class="alert alert-success left-icon-alert" role="alert">
+                            <strong>@ViewBag.message</strong>
+                        </div>
+                     }
+                    }
+
+                    <form class="form-horizontal" action="/Enrollment/EditEnrollment" method="post">
+                        <div class="form-group">
+                            <label for="default" class="col-sm-5 control-label">Faculty</label>
+                            <div class="col-sm-5">
+                                <span> @ViewBag.faculty</span>
+                                <input type="hidden" name="faculty" value="@ViewBag.faculty" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-5 control-label">Name</label>
+                            <div class="col-sm-5">
+                                <span> @ViewBag.en["Name"]</span>
+                                <input type="hidden" name="name" value="@ViewBag.en["Name"]" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-5 control-label">Student ID</label>
+                            <div class="col-sm-5">
+                                <span> @ViewBag.en["StudentId"]</span>
+                                <input type="hidden" name="studentid" value="@ViewBag.en["StudentId"]" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="default" class="col-sm-5 control-label">Reg No</label>
+                            <div class="col-sm-5">
+                                <span> @ViewBag.en["RegNo"]</span>
+                                <input type="hidden" name="regno" value="@ViewBag.en["RegNo"]" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="default" class="col-sm-5 control-label">Semester</label>
+                            <div class="col-sm-5">
+                                <span> @ViewBag.en["Semester"]</span>
+                                <input type="hidden" name="semester" value="@ViewBag.en["Semester"]" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-5 control-label">Session</label>
+                            <div class="col-sm-5">
+                                <span> @ViewBag.en["Session"]</span>
+                                <input type="hidden" name="session" value="@ViewBag.en["Session"]" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="col-sm-2">
+
+                            </div>
+                            @{ Object enroll = ViewBag.en;
+
+                             IDictionary<string, object> dict = new Dictionary<string, object>();
+                             dict = ViewBag.en;
+                             String column1 = "  <div class='row' style=' margin-left:50px'>First</div>  ";
+                             String column2 = "  <div class='row' style=' margin-left:50px'>Third</div>  ";
+                             String column3 = "  <div class='row' style=' margin-left:50px'>Fifth</div>  ";
+                             String column4 = "  <div class='row' style=' margin-left:50px'>Seventh</div>  ";
+                             if (Convert.ToInt32(dict["Semester"]) % 2 == 0)
+                             {
+                                 column1 = "  <div class='row' style=' margin-left:50px'>Second</div>  ";
+                                 column2 = "  <div class='row' style=' margin-left:50px'>Fourth</div>  ";
+                                 column3 = "  <div class='row' style=' margin-left:50px'>Sixth</div>  ";
+                                 column4 = "  <div class='row' style=' margin-left:50px'>Eighth</div>  ";
+
+                             }
+
+                             foreach (KeyValuePair<string, object> e in dict)
+                             {
+                                 if (e.Value.Equals(false))
+                                 {
+                                     string s = e.Key;
+                                     string c = s.Substring(s.Length - 3, 2);
+                                     int a = int.Parse(c);
+
+                                     if (a == 11 || a == 12)
+                                     {
+                                         column1 += "  <div class='row'>" + "<input type='checkbox' style=' margin-left:30px' name='subjectlist' value='" + e.Key + "'><span  style='padding-left:20px'>" + e.Key + " </span><br></div>  ";
+                                     }
+                                     else if (a == 21 || a == 22)
+                                     {
+                                         column2 += "  <div class='row'>" + "<input type='checkbox' style=' margin-left:30px' name='subjectlist' value='" + e.Key + "'><span  style='padding-left:20px'>" + e.Key + " </span><br></div>  ";
+                                     }
+                                     else if (a == 31 || a == 32)
+                                     {
+                                         column3 += "  <div class='row'>" + "<input type='checkbox' style=' margin-left:30px' name='subjectlist' value='" + e.Key + "'><span  style='padding-left:20px'>" + e.Key + " </span><br></div>  ";
+                                     }
+                                     else if (a == 41 || a == 42)
+                                     {
+                                         column4 += "  <div class='row'>" + "<input type='checkbox' style=' margin-left:30px' name='subjectlist' value='" + e.Key + "'><span  style='padding-left:20px'>" + e.Key + " </span><br></div>  ";
+                                     }
+                                 }
+                                 else if (e.Value.Equals(true))
+                                 {
+                                     string s = e.Key;
+                                     string c = s.Substring(s.Length - 3, 2);
+                                     int a = int.Parse(c);
+
+                                     if (a == 11 || a == 12)
+                                     {
+                                         column1 += "  <div class='row'>" + "<input type='checkbox' style=' margin-left:30px' name='subjectlist' value='" + e.Key + "'checked><span  style='padding-left:20px'>" + e.Key + " </span><br></div>  ";
+
+                                     }
+                                     else if (a == 21 || a == 22)
+                                     {
+                                         column2 += "  <div class='row'>" + "<input type='checkbox' style=' margin-left:30px' name='subjectlist' value='" + e.Key + "'checked><span  style='padding-left:20px'>" + e.Key + " </span><br></div>  ";
+
+                                     }
+                                     else if (a == 31 || a == 32)
+                                     {
+                                         column3 += "  <div class='row'>" + "<input type='checkbox' style=' margin-left:30px' name='subjectlist' value='" + e.Key + "'checked><span  style='padding-left:20px'>" + e.Key + " </span><br></div>  ";
+
+                                     }
+                                     else if (a == 41 || a == 42)
+                                     {
+                                         column4 += "  <div class='row'>" + "<input type='checkbox' style=' margin-left:30px' name='subjectlist' value='" + e.Key + "'checked><span  style='padding-left:20px'>" + e.Key + " </span><br></div>  ";
+
+                                     }
+                                 }
+
+                             }
+
+                            <div class="col-sm-2">
+                                @Html.Raw(column1)
+                            </div>
+                            <div class="col-sm-2">
+                                @Html.Raw(column2)
+                            </div>
+                            <div class="col-sm-2">
+                                @Html.Raw(column3)
+                            </div>
+                            <div class="col-sm-2">
+                                @Html.Raw(column4)
+                            </div>
+                            }
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-offset-2 col-sm-5">
+                                <button type="submit" id="nextButton" name="submit" class="btn btn-primary">Update Enrollment Subjects</button>
+
+                                <span>
+                                    @Html.ActionLink("Delete", "Delete", "Enrollment", new { id = ViewBag.en["StudentId"], semester = ViewBag.en["Semester"], faculty = ViewBag.faculty },
+                                                                                            new { onclick = "return confirm('Are you sure you wish to delete this Teacher?');", @class = "btn btn-danger btn-small" })
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-md-12 -->
+    </div>
+</div>
+

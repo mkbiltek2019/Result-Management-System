@@ -1,0 +1,156 @@
+﻿@model PRMS.Models.Department
+@{
+    ViewBag.Title = "EditDepartments";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Edit Department</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i> Admin</a></li>
+                <li> Department</li>
+                <li class="active">Edit Department</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<section class="section">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h5>Fill the Department info</h5>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <form class="form-horizontal" method="post">
+
+                            <input type="hidden" name="id" value="@Model.id">
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Department Name<span style="color:red;">*</span></label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="DepartmentName" class="form-control text-capitalize" id="fullanme" placeholder="e.g. @Model.DepartmentName" value="@Model.DepartmentName" required="required" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Short Form<span style="color:red;">*</span></label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="ShortForm" class="form-control text-uppercase" id="rollid" placeholder="e.g. @Model.ShortForm" value="@Model.ShortForm" required="required" autocomplete="off">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Faculty<span style="color:red;">*</span></label>
+                                <div class="col-sm-10">
+                                    <select name="Faculty" class="form-control" id="select" onchange="getTeacher()" required="required">
+                                        <option value="">Select Class</option>
+                                        @{
+                                            foreach (PRMS.Models.Faculty faculty in ViewBag.faculties)
+                                            {
+                                                if ((faculty.ShortForm).Equals(Model.Faculty))
+                                                {
+                                                    @Html.Raw("<option value='" + faculty.ShortForm + "' selected>" + faculty.FacultyName + "</option>");
+
+                                                }
+                                                else
+                                                {       @Html.Raw("<option value='" + faculty.ShortForm + "'>" + faculty.FacultyName + "</option>");
+
+                                                }
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Chairman</label>
+                                <div class="col-sm-10">
+                                    <select name="ChairmanId" class="form-control" id="op1">
+                                        <option value="Not Registered">Not Registered</option>
+
+                                        @{
+                                            foreach (PRMS.Models.Teacher teacher in ViewBag.teachers)
+                                            {
+                                                if ((teacher.Email).Equals(Model.ChairmanEmail))
+                                                {
+                                                    @Html.Raw("<option value='" + teacher.TeacherID + "' selected>" + teacher.Name + "</option>");
+
+                                                }
+                                                else
+                                                {       @Html.Raw("<option value='" + teacher.TeacherID + "'>" + teacher.Name + "</option>");
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" name="submit" class="btn btn-primary">Update Department Info</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-md-12 -->
+        </div>
+    </div>
+    </section>
+
+    <script>
+        $(document).ready(function () {
+
+
+        });
+        function getTeacher() {
+            var e = document.getElementById("select");
+            var val = e.options[e.selectedIndex].value;
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetTeachers")',
+                dataType: 'json',
+                data: 'faculty=' + val,
+                success: function (data) {
+                    $("#op1").empty();
+                    debugger;
+                    for (var i = 0; i < data.length; i++) {
+                        var opt = new Option(data[i]);
+                        $("#op1").append(opt);
+                    }
+                },
+                error: function (ex) {
+                    var r = jQuery.parseJSON(response.responseText);
+                    alert("Message: " + r.Message);
+                    alert("StackTrace: " + r.StackTrace);
+                    alert("ExceptionType: " + r.ExceptionType);
+                }
+            });
+        }
+    </script>
+

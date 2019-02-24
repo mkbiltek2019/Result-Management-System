@@ -1,0 +1,165 @@
+﻿@model IEnumerable<PRMS.Models.Department>
+@{
+    ViewBag.Title = "ManageDepartment";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+<script>
+    var mode = 'CSE';
+
+
+</script>
+
+
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Manage Department</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i> Admin</a></li>
+                <li> Department</li>
+                <li class="active">Manage Department</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<section class="section">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Search By Faculty</label>
+                                <div class="col-sm-10">
+                                    <select name="Faculty" class="form-control" id="Faculty" onchange="reloadDIV()" required="required">
+                                        <option value="selected">Select Class</option>
+                                        @{
+                                            foreach (PRMS.Models.Faculty faculty in ViewBag.faculties)
+                                            {
+                                                @Html.Raw("<option value='" + faculty.ShortForm + "'>" + faculty.FacultyName + "</option>");
+
+                                            }
+
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <h2></h2>
+                        </div>
+                    </div>
+
+
+                    <!--
+                       <div class="alert alert-success left-icon-alert" role="alert">
+                           <strong>Well done!</strong>
+                       </div>
+                       <div class="alert alert-danger left-icon-alert" role="alert">
+                           <strong>Oh snap!</strong>
+                       </div>
+                    -->
+                    <div class="panel-body p-20">
+
+                        <table id="table" name="table" class="display table table-striped table-bordered" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Short Form</th>
+                                    <th>Faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Short Form</th>
+                                    <th>Faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody id="tablebody">
+
+                                @foreach (var item in Model)
+                                {
+
+
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.DepartmentName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ShortForm)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Faculty)
+                                        </td>
+                                        <td>
+
+                                            <span>      @Html.ActionLink("Edit", "EditDepartment", "Department", new { id = item.id }, new { @class = "btn btn-primary btn-small " }) </span>
+                                            <span>
+                                                @Html.ActionLink("Delete", "DeleteDepartment", "Department", new { id = item.id },
+                                                                                            new { onclick = "return confirm('Are you sure you wish to delete this Teacher?');", @class = "btn btn-danger btn-small" })
+                                            </span>
+
+
+                                        </td>
+
+
+                                    </tr>
+                                }
+
+
+
+
+                            </tbody>
+                        </table>
+
+
+                        <!-- /.col-md-12 -->
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-md-6 -->
+
+        </div>
+        <!-- /.col-md-12 -->
+    </div>
+</section>
+
+<script>
+
+    function reloadDIV() {
+        mode = $('#Faculty').val();
+
+
+        //   $("#tablebody").empty();
+
+
+
+        document.getElementById("table").innerHTML.reload
+    }
+</script>

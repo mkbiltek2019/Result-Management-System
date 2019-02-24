@@ -1,0 +1,174 @@
+﻿@model IEnumerable<PRMS.Models.Course>
+@{
+    ViewBag.Title = "ApproveMarks";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+
+}
+<script>
+    var mode = 'CSE';
+</script>
+
+
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Approve Marks</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Teacher")"><i class="fa fa-home"></i> Teacher</a></li>
+
+                <li class="active">Approve Marks</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                    </div>
+                </div>
+
+                <div class="panel-body p-20">
+                    @{
+                        if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger left-icon-alert" role="alert">
+                                <strong>@ViewBag.Error</strong>
+                            </div>
+                        }
+                        else if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success left-icon-alert" role="alert">
+                                <strong>@ViewBag.Message</strong>
+                            </div>
+                        }
+                    }
+
+                    <table id="example" class="display table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Time</th>
+                                <th>Message</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Time</th>
+                                <th>Message</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @if (ViewBag.Activities != null)
+                            {
+                                var i = 0;
+                                foreach (var item in ViewBag.Activities)
+                                {
+                                    if (item != null)
+                                    {
+                                        if (item.Content != null)
+                                        {
+                                            i++;
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.Time</td>
+                                                <td>@item.Message</td>
+                                                <td>
+                                                    @if (item.FilePath != null)
+                                                    {
+                                                        if (!item.Approved)
+                                                        {
+                                                            <span>
+                                                                @Html.ActionLink("Approve", "Approve", "Marks", new { id = item.id },
+                                                                                                    new { onclick = "return confirm('Are you sure you wish to approve this data?');", @class = "btn btn-primary btn-small " })
+                                                            </span>
+                                                            <span>@Html.ActionLink("Details", "Details", "Marks", new { id = item.id }, new { @class = "btn btn-primary btn-small " }) </span>
+                                                            <!--<span>
+                                                                @Html.ActionLink("Delete", "DeleteMarksFromExcel", "History", new { id = item.id, dest = 1 },
+                                                                                                    new { onclick = "return confirm('Are you sure you wish to delete this data?');", @class = "btn btn-danger btn-small" })
+                                                            </span>-->
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Approved</span>
+                                                            <span>@Html.ActionLink("Details", "Details", "Marks", new { id = item.id }, new { @class = "btn btn-primary btn-small " }) </span>
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No Action</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-md-6 -->
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        getCourses();
+    });
+
+    function getCourses() {
+        var e = document.getElementById("select_semester");
+        var selected_semester = e.options[e.selectedIndex].value;
+
+        var f = document.getElementById("select_faculty");
+        var selected_faculty = f.options[e.selectedIndex].value;
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetCourses")',
+            dataType: 'json',
+            data: 'semester=' + encodeURIComponent(selected_semester) + '&faculty=' + encodeURIComponent(selected_faculty),
+            success: function (data) {
+                $("#select_course_code").empty();
+                debugger;
+                for (var i = 0; i < data.length; i++) {
+                    var opt = new Option(data[i]);
+                    $("#select_course_code").append(opt);
+                }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+    }
+</script>

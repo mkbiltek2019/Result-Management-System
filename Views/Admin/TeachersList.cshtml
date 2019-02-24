@@ -1,0 +1,116 @@
+﻿@model IEnumerable<PRMS.Models.Teacher>
+@{
+    ViewBag.Title = "TeachersList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Manage Teacher</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i> Admin</a></li>
+                <li> Teachers Corner</li>
+                <li class="active">Manage Teacher</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+<section class="section">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h5>View Classes Info</h5>
+                        </div>
+                    </div>
+
+                    <div class="panel-body p-20">
+
+                        <table id="example" class="display table table-striped table-bordered" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TeacherID)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Email)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Mobile)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Faculty)
+                                        </td>
+                                        <td>
+
+                                            <span>      @Html.ActionLink("Edit", "Edit", "Admin", new { id = item.TeacherID }, new { @class = "btn btn-primary btn-small " }) </span>
+                                            <span>
+                                                @Html.ActionLink("Delete", "Delete", "Admin", new { id = item.TeacherID },
+                                                                                            new { onclick = "return confirm('Are you sure you wish to delete this Teacher?');", @class = "btn btn-danger btn-small" })
+                                            </span>
+
+                                            <span>      @Html.ActionLink("Detail", "Detail", "Admin", new { id = item.TeacherID }, new { @class = "btn btn-info btn-small " }) </span>
+
+
+                                        </td>
+                                    </tr>
+                                }
+
+
+
+                            </tbody>
+                        </table>
+
+
+                        <!-- /.col-md-12 -->
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-md-6 -->
+
+
+        </div>
+        <!-- /.col-md-12 -->
+    </div>
+    </section>
+

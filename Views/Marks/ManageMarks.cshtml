@@ -1,0 +1,228 @@
+﻿@model IEnumerable<PRMS.Models.Course>
+@{
+    ViewBag.Title = "ManageMarks";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+
+}
+<script>
+    var mode = 'CSE';
+</script>
+
+
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Manage Marks</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Teacher")"><i class="fa fa-home"></i> Teacher</a></li>
+
+                <li class="active">Manage Marks</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h3>Please select the information below to manage related marks</h3>
+                    </div>
+                </div>
+
+                <div class="panel-body p-20">
+                    @using (Html.BeginForm("ManageMarks", "Marks", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Select Faculty<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="Faculty" class="form-control" id="select_faculty" required="required">
+                                    <option value="">Select Faculty</option>
+                                    @foreach (PRMS.Models.Faculty faculty in ViewBag.faculties)
+                                    {
+                                        @Html.Raw("<option value='" + faculty.ShortForm + "'>" + faculty.FacultyName + "</option>");
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Select Session<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="session" class="form-control" id="select_session" required="required">
+                                    <option value="">Select Session</option>
+                                    @{  foreach (PRMS.Models.AllSession session in ViewBag.all_session)
+                                      {
+
+                                        @Html.Raw("<option value='" + session.Session + "'>" + session.Session + "</option>");
+
+                                      }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Select Semester<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="select_semester" name="semester" onchange="getCourses()" required="required">
+                                    <option value="">Select Semester</option>
+                                    <option value="1">1st Semester</option>
+                                    <option value="2">2nd Semester</option>
+                                    <option value="3">3rd Semester</option>
+                                    <option value="4">4th Semester</option>
+                                    <option value="5">5th Semester</option>
+                                    <option value="6">6th Semester</option>
+                                    <option value="7">7th Semester</option>
+                                    <option value="8">8th Semester</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Select Course Code<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="course_code" class="form-control" id="select_course_code" required="required">
+                                    <option value="">Select Course Code</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" class="btn btn-primary" value="Get Marks" />
+                            </div>
+                        </div>
+                    }
+
+                    @{
+                        if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger left-icon-alert" role="alert">
+                                <strong>@ViewBag.Error</strong>
+                            </div>
+                        }
+                        else if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success left-icon-alert" role="alert">
+                                <strong>@ViewBag.Message</strong>
+                            </div>
+                        }
+                    }
+
+                    @if (ViewBag.Marks != null && ViewBag.Course != null)
+                    {
+                        <table id="table" name="table" class="display table table-striped table-bordered" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Reg</th>
+                                    <th>Attendence</th>
+                                    <th>Assignment</th>
+                                    <th>Mid</th>
+                                    <th>Final</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Reg</th>
+                                    <th>Attendence</th>
+                                    <th>Assignment</th>
+                                    <th>Mid</th>
+                                    <th>Final</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody id="tablebody">
+
+                                @foreach (var item in ViewBag.Marks)
+                                {
+                                    <tr>
+                                        @if (item != null)
+                                        {
+                                            <td>@item.StudentId</td>
+                                            <td>@item.RegNo</td>
+                                            <td>@item.Attendence</td>
+                                            <td>@item.Assignment</td>
+                                            <td>@item.Mid</td>
+                                            <td>@item.Final</td>
+                                            <td>
+                                                @if (!item.Submitted)
+                                                {
+                                                    <span>@Html.ActionLink("Edit", "EditMark", "Marks", new { id = item.StudentId, faculty = ViewBag.Faculty, course_code = ViewBag.Course }, new { @class = "btn btn-primary btn-small " }) </span>
+                                                    <span>
+                                                        @Html.ActionLink("Delete", "DeleteMark", "Marks", new { id = item.StudentId, faculty = ViewBag.Faculty, course_code = ViewBag.Course },
+                                                                                                new { onclick = "return confirm('Are you sure you wish to delete this Mark?');", @class = "btn btn-danger btn-small" })
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Submitted</span>
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- /.col-md-6 -->
+
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        getCourses();
+    });
+
+    function getCourses() {
+        var e = document.getElementById("select_semester");
+        var selected_semester = e.options[e.selectedIndex].value;
+
+        var f = document.getElementById("select_faculty");
+        var selected_faculty = f.options[e.selectedIndex].value;
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetCourses")',
+            dataType: 'json',
+            data: 'semester=' + encodeURIComponent(selected_semester) + '&faculty=' + encodeURIComponent(selected_faculty),
+            success: function (data) {
+                $("#select_course_code").empty();
+                debugger;
+                for (var i = 0; i < data.length; i++) {
+                    var opt = new Option(data[i]);
+                    $("#select_course_code").append(opt);
+                }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+    }
+</script>

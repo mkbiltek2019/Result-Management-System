@@ -1,0 +1,120 @@
+﻿@model IEnumerable<PRMS.Models.CourseResult>
+@{
+    ViewBag.Title = "ResultDetails";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Result Details</h2>
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i> Admin</a></li>
+                <li><a href="@Url.Action("Index", "Result")"> Result Management</a></li>
+                <li class="active">Result Details</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    @{
+                        if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger left-icon-alert" role="alert">
+                                <strong>@ViewBag.Error</strong>
+                            </div>
+                        }
+                        else if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success left-icon-alert" role="alert">
+                                <strong>@ViewBag.Message</strong>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="panel-body">
+                    @if (ViewBag.Result != null)
+                    {
+                        var item = ViewBag.Result;
+                        <div class="panel-title">
+                            <h4>Name of the Student: <strong>@item.Name</strong></h4>
+                            <h4>Reg. No. @item.RegNo</h4>
+                            <h4>Session: @item.Session</h4>
+                            <h4>Exam. Roll No. @item.StudentId</h4>
+
+                            <h4>GPA: @item.GPA</h4>
+                            <h4>Prev CGPA: @item.PrevCGPA</h4>
+                            <h4>Prev CCH: @item.PrevCCH</h4>
+                            <h4>CGPA: @item.CGPA</h4>
+                            <h4>CCH: @item.CCH</h4>
+                            @if (item.Remarks == "")
+                            {
+                                <h4>Passed</h4>
+                            }
+                            else
+                            {
+                                <h4>REMARKS: @item.Remarks</h4>
+                            }
+                        </div>
+
+                        <p>Details Result</p>
+                        <table id="table" name="table" class="display table table-striped table-bordered" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Course Code</th>
+                                    <th>Course Title</th>
+                                    <th>Credit Hours</th>
+                                    <th>Letter Grade</th>
+                                    <th>GP</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Course Code</th>
+                                    <th>Course Title</th>
+                                    <th>Credit Hours</th>
+                                    <th>Letter Grade</th>
+                                    <th>GP</th>
+                                </tr>
+                            </tfoot>
+                            <tbody id="tablebody">
+                                @{var i = 0;}
+                                @foreach (var res in Model)
+                                {
+                                    if (item != null)
+                                    {
+                                        i++;
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>@Html.DisplayFor(modelItem => res.CourseCode)</td>
+                                            <td>@Html.DisplayFor(modelItem => res.CourseTitle)</td>
+                                            <td>@Html.DisplayFor(modelItem => res.CreditHours)</td>
+                                            <td>@Html.DisplayFor(modelItem => res.LetterGrade)</td>
+                                            <td>@Html.DisplayFor(modelItem => res.GP)</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- /.col-md-12 -->
+    </div>
+</div>

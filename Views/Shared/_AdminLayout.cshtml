@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Patuakhali Science & Technology University</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PSTU Result Management System | Dashboard</title>
+
+    <link rel="stylesheet" href="../stylesheets/main.css" media="screen">
+    <link rel="stylesheet" href="../stylesheets/screen.css" media="screen">
+    <link rel="stylesheet" href="../stylesheets/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="../stylesheets/ie.css" media="screen">
+    <link rel="stylesheet" href="../stylesheets/print.css" media="screen">
+
+
+    <link rel="stylesheet" href="../Content/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="../Content/css/font-awesome.min.css" media="screen">
+    <link rel="stylesheet" href="../Content/css/animate-css/animate.min.css" media="screen">
+    <link rel="stylesheet" href="../Content/css/lobipanel/lobipanel.min.css" media="screen">
+    <link rel="stylesheet" href="../Content/css/toastr/toastr.min.css" media="screen">
+    <link rel="stylesheet" href="../Content/css/icheck/skins/line/blue.css" media="screen">
+    <link rel="stylesheet" href="../Content/css/icheck/skins/line/red.css" media="screen">
+    <link rel="stylesheet" href="../Content/css/icheck/skins/line/green.css" media="screen">
+    <link rel="stylesheet" href="../Content/css/main.css" media="screen">
+    <link rel="stylesheet" href="../Content/css/main.min.css" media="screen">
+    <script src="../js/modernizr/modernizr.min.js"></script>
+    <link rel="stylesheet" href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" integrity="sha384-dNpIIXE8U05kAbPhy3G1cz+yZmTzA6CY8Vg/u2L9xRnHjJiAK76m2BIEaSEV+/aU" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .dropdown-submenu {
+            position: relative;
+        }
+
+            .dropdown-submenu .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -1px;
+            }
+    </style>
+
+</head>
+<body class="top-navbar-fixed">
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+
+    <script src="../js/jquery/jquery-2.2.4.min.js"></script>
+    <script src="../js/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap/bootstrap.min.js"></script>
+    <script src="../js/pace/pace.min.js"></script>
+    <script src="../js/lobipanel/lobipanel.min.js"></script>
+    <script src="../js/iscroll/iscroll.js"></script>
+
+    <!-- ========== PAGE JS FILES ========== -->
+    <script src="../js/prism/prism.js"></script>
+    <script src="../js/waypoint/waypoints.min.js"></script>
+    <script src="../js/counterUp/jquery.counterup.min.js"></script>
+    <script src="../js/amcharts/amcharts.js"></script>
+    <script src="../js/amcharts/serial.js"></script>
+    <script src="../js/amcharts/plugins/export/export.min.js"></script>
+    <link rel="stylesheet" href="../js/amcharts/plugins/export/export.css" type="text/css" media="all" />
+    <script src="../js/amcharts/themes/light.js"></script>
+    <script src="../js/toastr/toastr.min.js"></script>
+    <script src="../js/icheck/icheck.min.js"></script>
+
+    <!-- ========== THEME JS ========== -->
+    <script src="../js/main.js"></script>
+    <script src="../js/production-chart.js"></script>
+    <script src="../js/traffic-chart.js"></script>
+    <script src="../js/task-list.js"></script>
+
+    <div class="main-wrapper">
+
+        <nav class="navbar top-navbar bg-white box-shadow">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="navbar-header no-padding">
+                        <a class="navbar-brand" href="@Url.Action("Index", "Admin")">
+                            PRMS | Admin
+                        </a>
+                        <span class="small-nav-handle hidden-sm hidden-xs"><i class="fa fa-outdent"></i></span>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </button>
+                        <button type="button" class="navbar-toggle mobile-nav-toggle">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div>
+                    <!-- /.navbar-header -->
+
+                    <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                        <ul class="nav navbar-nav" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                            <li class="hidden-sm hidden-xs"><a href="#" class="user-info-handle"><i class="fa fa-user"></i></a></li>
+                            <li class="hidden-sm hidden-xs"><a href="#" class="full-screen-handle"><i class="fa fa-arrows-alt"></i></a></li>
+
+                            <li class="hidden-xs hidden-xs"><!-- <a href="#">My Tasks</a> --></li>
+                        </ul>
+                        <!-- /.nav navbar-nav -->
+
+                        <ul class="nav navbar-nav navbar-right" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                            <li><a href="@Url.Action("LogOut", "Admin")" class="color-danger text-center"><i class="fa fa-sign-out"></i> Logout</a></li>
+                        </ul>
+                        <!-- /.nav navbar-nav navbar-right -->
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="content-wrapper">
+            <div class="content-container">
+                <div class="left-sidebar bg-black-300 box-shadow ">
+                    <div class="sidebar-content">
+                        <div class="user-info closed">
+                            <img src="http://placehold.it/90/c2c2c2?text=User" alt="John Doe" class="img-circle profile-img">
+                            <h6 class="title">@ViewBag.username</h6>
+                            <small class="info">@ViewBag.email</small>
+                        </div>
+                        <!-- /.user-info -->
+
+                        <div class="sidebar-nav">
+                            <ul class="side-nav color-gray">
+                                <li class="nav-header">
+                                    <span class="">Main Category</span>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Index", "Admin")"><i class="fa fa-dashboard"></i> <span>Dashboard</span> </a>
+                                </li>
+
+                                <li class="nav-header">
+                                    <span class="">Appearance</span>
+                                </li>
+                                <li class="has-children">
+                                    <a href="#"><i class="fa fa-user"></i> <span>Teachers Corner</span> <i class="fa fa-angle-right arrow"></i></a>
+                                    <ul class="child-nav">
+
+                                        <li><span> @Html.ActionLink("Add Teacher", "AddTeacher", "Admin", routeValues: null, htmlAttributes: new { id = "addTeacherLink" })</span> </li>
+                                        <li><span> @Html.ActionLink("Manage Teacher", "TeachersList", "Admin", routeValues: null, htmlAttributes: new { id = "manageTeacherLink" })</span> </li>
+
+                                    </ul>
+                                </li>
+                                <li class="has-children">
+                                    <a href="#"><i class="fa fa-list"></i> <span>Faculties</span> <i class="fa fa-angle-right arrow"></i></a>
+                                    <ul class="child-nav">
+                                        <li><span> @Html.ActionLink("Add Faculty", "AddFaculty", "Faculty", routeValues: null, htmlAttributes: new { id = "addTeacherLink" })</span> </li>
+                                        <li><span> @Html.ActionLink("Manage Faculty", "ManageFaculty", "Faculty", routeValues: null, htmlAttributes: new { id = "manageTeacherLink" })</span> </li>
+                                    </ul>
+                                </li>
+                                <li class="has-children">
+                                    <a href="#"><i class="fa fa-file-text"></i> <span>Department</span> <i class="fa fa-angle-right arrow"></i></a>
+                                    <ul class="child-nav">
+                                        <li><span> @Html.ActionLink("Add Department", "AddDepartment", "Department", routeValues: null, htmlAttributes: new { id = "addTeacherLink" })</span> </li>
+                                        <li><span> @Html.ActionLink("Manage Department", "ManageDepartment", "Department", routeValues: null, htmlAttributes: new { id = "manageTeacherLink" })</span> </li>
+                                    </ul>
+                                </li>
+                                <li class="has-children">
+                                    <a href="#"><i class="fa fa-book"></i> <span>Courses</span> <i class="fa fa-angle-right arrow"></i></a>
+                                    <ul class="child-nav">
+                                        <li><span> @Html.ActionLink("Add Course", "AddCourse", "Course", routeValues: null, htmlAttributes: new { id = "addCourseLink" })</span> </li>
+                                        <li><span> @Html.ActionLink("Manage Course", "ManageCourse", "Course", routeValues: null, htmlAttributes: new { id = "manageCourseLink" })</span> </li>
+                                    </ul>
+                                </li>
+                                <li class="has-children">
+                                    <a href="#"><i class="fa fa-clock-o"></i> <span>Session</span> <i class="fa fa-angle-right arrow"></i></a>
+                                    <ul class="child-nav">
+                                        <li><span> @Html.ActionLink("Create Session", "Index", "Sessions", routeValues: null, htmlAttributes: new { id = "addSessionLink" })</span> </li>
+                                        <li><span> @Html.ActionLink("Manage Session", "ManageSession", "Sessions", routeValues: null, htmlAttributes: new { id = "manageSessionLink" })</span> </li>
+
+                                    </ul>
+                                </li>
+                                <li class="has-children">
+                                    <a href="#"><i class="fa fa-file-text"></i> <span>Enrollment</span> <i class="fa fa-angle-right arrow"></i></a>
+                                    <ul class="child-nav">
+                                        <li><span> @Html.ActionLink("Enrollment Student", "Index", "Enrollment", routeValues: null, htmlAttributes: new { id = "addTeacherLink" })</span> </li>
+                                        <li><span> @Html.ActionLink("Manage Enrollment", "ManageEnrollment", "Enrollment", routeValues: null, htmlAttributes: new { id = "manageTeacherLink" })</span> </li>
+                                    </ul>
+                                </li>
+                                <li><a href="@Url.Action("Index", "Result")"><i class="fa fa fa-registered"></i> <span> Result Management</span></a></li>
+                                <li><a href="@Url.Action("ChangePassword", "Admin")"><i class="fa fa fa-key"></i> <span> Admin Change Password</span></a></li>
+                                <li><a href="@Url.Action("GetHistory", "Admin")"><i class="fa fa-history"></i> <span> History</span></a></li>
+                            </ul>
+                        </div>
+                        <!-- /.sidebar-nav -->
+                    </div>
+                    <!-- /.sidebar-content -->
+                </div>
+
+                <div class="main-page">
+                    @RenderBody()
+                </div>
+                <!-- /.main-page -->
+
+            </div>
+            <!-- /.content-container -->
+        </div>
+        <!-- /.content-wrapper -->
+
+    </div>
+    <!-- /.main-wrapper -->
+    <!-- ========== COMMON JS FILES ========== -->
+
+</body>
+</html>
+
+

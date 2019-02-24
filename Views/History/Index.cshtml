@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "History";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">History</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Teacher")"><i class="fa fa-home"></i> Teacher</a></li>
+
+                <li class="active">History</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel">
+
+                <div class="panel-body p-20">
+
+                    <table id="example" class="display table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Time</th>
+                                <th>Course Code</th>
+                                <th>Message</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>#</th>
+                                <th>Time</th>
+                                <th>Course Code</th>
+                                <th>Message</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @if (ViewBag.Activities != null)
+                            {
+                                var i = 0;
+                                foreach (var item in ViewBag.Activities)
+                                {
+                                    i++;
+                                    <tr>
+                                        @if (item != null)
+                                        {
+                                            <td>@i</td>
+                                            <td>@item.Time</td>
+                                            <td>@item.CourseCode</td>
+                                            <td>@item.Message</td>
+                                            <td>
+                                                @if (item.FilePath != null)
+                                                {
+                                                    if (!item.Approved)
+                                                    {
+                                                        <span>@Html.ActionLink("Details", "Details", "History", new { id = item.id }, new { @class = "btn btn-primary btn-small " }) </span>
+                                                        <span>
+                                                            @Html.ActionLink("Delete", "DeleteMarksFromExcel", "History", new { id = item.id, dest = 0 },
+                                                                                                    new { onclick = "return confirm('Are you sure you wish to delete this data?');", @class = "btn btn-danger btn-small" })
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Submitted</span>
+                                                        <span>@Html.ActionLink("Details", "Details", "History", new { id = item.id }, new { @class = "btn btn-primary btn-small " }) </span>
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span>No action</span>
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                    <!-- /.col-md-12 -->
+                </div>
+
+                <!-- Education dialog -->
+                <div id="dialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-center">
+                    <div role="document" class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 id="exampleModalLabel" class="modal-title">Select New Excel</h4>
+                                <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="file" class="form-control" name="file" id="file" />
+                                        <input type="hidden" id="education-info-what" value="university" />
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                &nbsp;&nbsp;<strong><span class="text-primary" id="dialog-info-error"></span></strong>
+                                <button type="button" class="btn btn-primary" id="dialog-info-save">Change</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- /.col-md-6 -->
+    </div>
+    <!-- /.col-md-12 -->
+</div>

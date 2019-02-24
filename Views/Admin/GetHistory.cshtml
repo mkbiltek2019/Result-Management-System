@@ -1,0 +1,165 @@
+﻿@model IEnumerable<PRMS.Models.Course>
+@{
+    ViewBag.Title = "GetHistory";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+<script>
+    var mode = 'CSE';
+</script>
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">History</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i> Admin</a></li>
+                <li> History</li>
+                <li class="active">See History</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<section class="section">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="panel">
+                    <div class="panel-body p-20">
+                        @if (ViewBag.History != null)
+                        {
+                            <table id="table" name="table" class="display table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Date</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Date</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody id="tablebody">
+                                    @{var i = 0;}
+                                    @foreach (var item in ViewBag.History)
+                                    {
+                                        i++;
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Time</td>
+                                            <td>@item.Message</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
+                        @if (ViewBag.Message != null)
+                        {
+                            <p>@ViewBag.Message</p>
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-md-6 -->
+
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        getCourses();
+        reloadDIV();
+    });
+
+    function getCourses() {
+        var e = document.getElementById("select_semester");
+        var selected_semester = e.options[e.selectedIndex].value;
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetCourses")',
+            dataType: 'json',
+            data: 'semester=' + selected_semester,
+            success: function (data) {
+                $("#select_course_code").empty();
+                debugger;
+                for (var i = 0; i < data.length; i++) {
+                    var opt = new Option(data[i]);
+                    $("#select_course_code").append(opt);
+                }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+    }
+
+    function reloadDIV() {
+        var e = document.getElementById("select_course_code");
+        var course_code = e.options[e.selectedIndex].value;
+
+        var f = document.getElementById("select_session");
+        var session = f.options[e.selectedIndex].value;
+        alert("Reload div for: " + course_code + ", " + session);
+
+        // Find a <table> element with id="myTable":
+        var table = document.getElementById("tablebody");
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetMarks")',
+            dataType: 'json',
+            data: 'course_code=' + course_code + ',session=' + session,
+            success: function (data) {
+                $("#tablebody").empty();
+                debugger;
+                alert("data: " + data);
+                for (var i = 0; i < data.length; i++) {
+                    // Create an empty <tr> element and add it to the 1st position of the table:
+                    var row = table.insertRow(i);
+
+                    var obj = JSON.parse(data[i]);
+                    for (var j = 0; j < obj.length; J++) {
+                        // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+                        var cell = row.insertCell(i);
+                        // Add some text to the new cells:
+                        cell.innerHTML = obj[j];
+                    }
+                }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+        //document.getElementById("table").innerHTML.reload;
+    }
+</script>

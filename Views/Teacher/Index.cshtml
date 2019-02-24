@@ -1,0 +1,162 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}  
+
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Dashboard</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Teacher")"><i class="fa fa-home"></i> Teacher</a></li>
+
+                <li class="active">Teacher Dashboard</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5>Please select the information below to manage related Enrollment</h5>
+                    </div>
+                </div>
+
+
+                <!--
+                   <div class="alert alert-success left-icon-alert" role="alert">
+                       <strong>Well done!</strong>
+                   </div>
+                   <div class="alert alert-danger left-icon-alert" role="alert">
+                       <strong>Oh snap!</strong>
+                   </div>
+                -->
+                <div class="panel-body p-20">
+                    @using (Html.BeginForm("DownloadEnroll", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Select Faculty<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="faculty" class="form-control" id="select_faculty"  required="required">
+                                    @foreach (PRMS.Models.Faculty faculty in ViewBag.faculties)
+                                    {
+                                        @Html.Raw("<option value='" + faculty.ShortForm + "'>" + faculty.FacultyName + "</option>");
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Select Session<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="session" class="form-control" id="select_session" required="required">
+                                    @{  foreach (PRMS.Models.AllSession session in ViewBag.all_session)
+                                      {
+
+                                        @Html.Raw("<option value='" + session.Session + "'>" + session.Session + "</option>");
+
+                                      }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Select Semester<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="select_semester" name="semester" onchange="getCourses()" required="required">
+                                    <option value="1">1st Semester</option>
+                                    <option value="2">2nd Semester</option>
+                                    <option value="3">3rd Semester</option>
+                                    <option value="4">4th Semester</option>
+                                    <option value="5">5th Semester</option>
+                                    <option value="6">6th Semester</option>
+                                    <option value="7">7th Semester</option>
+                                    <option value="8">8th Semester</option>
+                                    <option value="9">9th Semester</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Select Course Code<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="course_code" class="form-control" id="select_course_code" required="required">
+                                </select>
+                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" class="btn btn-primary" value="Download Enrolled Student" />
+                            </div>
+                        </div>
+                    }
+                         
+                    
+
+                   
+                </div>
+            </div>
+        </div>
+        <!-- /.col-md-6 -->
+
+    </div>
+</section>
+         
+<script>
+    $(document).ready(function () {
+        getCourses();
+    });
+
+    function getCourses() {
+        
+        var e = document.getElementById("select_semester");
+        var selected_semester = e.options[e.selectedIndex].value;
+
+        var f = document.getElementById("select_faculty");
+        var selected_faculty = f.options[e.selectedIndex].value;
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetCourses")',
+            dataType: 'json',
+            data: 'semester=' + encodeURIComponent(selected_semester) + '&faculty=' + encodeURIComponent(selected_faculty),
+            success: function (data) {
+                $("#select_course_code").empty();
+                debugger;
+                for (var i = 0; i < data.length; i++) {
+                    var opt = new Option(data[i]);
+                    $("#select_course_code").append(opt);
+                }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+    }
+
+   
+</script>     

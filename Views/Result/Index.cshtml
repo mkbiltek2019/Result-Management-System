@@ -1,0 +1,334 @@
+﻿@model IEnumerable<PRMS.Models.Result>
+@{
+                /**/
+
+                ViewBag.Title = "Result Management";
+                Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Result Management</h2>
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i> Admin</a></li>
+
+                <li class="active">Result Management</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    @{
+                        if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger left-icon-alert" role="alert">
+                                <strong>@ViewBag.Error</strong>
+                            </div>
+                        }
+                        else if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success left-icon-alert" role="alert">
+                                <strong>@ViewBag.Message</strong>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="panel-body">
+                    @if (Model != null)
+                    {
+                        <span>@Html.ActionLink("Download Result", "DownloadResult", "Result", new { Faculty = ViewBag.Faculty, Session = ViewBag.Session, Semester = ViewBag.Semester }, new { @class = "btn btn-primary btn-small " }) </span>
+                        <span>@Html.ActionLink("Grade Sheet", "GradeSheet", "Report", new { Faculty = ViewBag.Faculty, Session = ViewBag.Session, Semester = ViewBag.Semester }, new { @class = "btn btn-primary btn-small " }) </span>
+
+                        <table id="table" name="table" class="display table table-striped table-bordered" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Stu ID</th>
+                                    <th>Reg</th>
+                                    <th>GPA</th>
+                                    <th>Prev CGPA</th>
+                                    <th>Prev CCH</th>
+                                    <th>CGPA</th>
+                                    <th>CCH</th>
+                                    <th>Remarks</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Stu ID</th>
+                                    <th>Reg</th>
+                                    <th>GPA</th>
+                                    <th>Prev CGPA</th>
+                                    <th>Prev CCH</th>
+                                    <th>CGPA</th>
+                                    <th>CCH</th>
+                                    <th>Remarks</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody id="tablebody">
+                                @{var i = 0;}
+                                @foreach (var item in Model)
+                                {
+                                    if (item != null)
+                                    {
+                                        i++;
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>@Html.DisplayFor(modelItem => item.StudentId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.RegNo)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.GPA)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.PrevCGPA)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.PrevCCH)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CGPA)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CCH)</td>
+                                            @if (item.Remarks == "")
+                                            {
+                                                <td>Passed</td>
+                                            }
+                                            else
+                                            {
+                                                <td>F in @Html.DisplayFor(modelItem => item.Remarks)</td>
+                                            }
+                                            <td><span>@Html.ActionLink("Details", "ResultDetails", "Result", new { StudentId = item.StudentId, Semester = item.Semester }, new { @class = "btn btn-primary btn-small " }) </span></td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    }
+
+                    <div class="panel-title">
+                        <h3>Please Fill Up With All Information To Get Results</h3>
+                    </div>
+
+                    <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="key" value="0" />
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Faculty<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="Faculty" class="form-control" id="select_faculty" required="required">
+                                    @if (ViewBag.Faculty != null)
+                                    {
+                                        <option value="@ViewBag.Faculty">@ViewBag.Faculty</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="">Select Faculty</option>
+                                    }
+                                    @{ foreach (PRMS.Models.Faculty faculty in ViewBag.faculties)
+                                        {
+
+                                            @Html.Raw("<option value='" + faculty.ShortForm + "'>" + faculty.FacultyName + "</option>");
+
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Session<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="Session" class="form-control" id="select_session" required="required">
+                                    @if (ViewBag.Session != null)
+                                    {
+                                        <option value="@ViewBag.Session">@ViewBag.Session</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="">Select Session</option>
+                                    }
+                                    @{ foreach (PRMS.Models.AllSession session in ViewBag.all_session)
+                                        {
+
+                                            @Html.Raw("<option value='" + session.Session + "'>" + session.Session + "</option>");
+
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Semester<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="select_semester" name="Semester" required="required">
+                                    @if (ViewBag.Semester != null)
+                                    {
+                                        <option value="@ViewBag.Semester">Semester @ViewBag.Semester</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="">Select Semester</option>
+                                    }
+                                    <option value="1">1st Semester</option>
+                                    <option value="2">2nd Semester</option>
+                                    <option value="3">3rd Semester</option>
+                                    <option value="4">4th Semester</option>
+                                    <option value="5">5th Semester</option>
+                                    <option value="6">6th Semester</option>
+                                    <option value="7">7th Semester</option>
+                                    <option value="8">8th Semester</option>
+                                    <option value="9">9th Semester</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" name="submit" class="btn btn-primary">Get Results</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="panel-title">
+                        <h3>Please Fill Up With All Information To Calculate Results</h3>
+                    </div>
+
+                    <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="key" value="1" />
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Faculty<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="Faculty" class="form-control" id="select_faculty" required="required">
+                                    @if (ViewBag.Faculty != null)
+                                    {
+                                        <option value="@ViewBag.Faculty">@ViewBag.Faculty</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="">Select Faculty</option>
+                                    }
+                                    @{ foreach (PRMS.Models.Faculty faculty in ViewBag.faculties)
+                                        {
+
+                                            @Html.Raw("<option value='" + faculty.ShortForm + "'>" + faculty.FacultyName + "</option>");
+
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Session<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="Session" class="form-control" id="select_session" required="required">
+                                    @if (ViewBag.Session != null)
+                                    {
+                                        <option value="@ViewBag.Session">@ViewBag.Session</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="">Select Session</option>
+                                    }
+                                    @{ foreach (PRMS.Models.AllSession session in ViewBag.all_session)
+                                        {
+
+                                            @Html.Raw("<option value='" + session.Session + "'>" + session.Session + "</option>");
+
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Semester<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="select_semester" name="Semester" required="required">
+                                    @if (ViewBag.Semester != null)
+                                    {
+                                        <option value="@ViewBag.Semester">Semester @ViewBag.Semester</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="">Select Semester</option>
+                                    }
+                                    <option value="1">1st Semester</option>
+                                    <option value="2">2nd Semester</option>
+                                    <option value="3">3rd Semester</option>
+                                    <option value="4">4th Semester</option>
+                                    <option value="5">5th Semester</option>
+                                    <option value="6">6th Semester</option>
+                                    <option value="7">7th Semester</option>
+                                    <option value="8">8th Semester</option>
+                                    <option value="9">9th Semester</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" name="submit" class="btn btn-danger" onclick="return confirm('Are you sure you wish to Calculate Results?');">Calculate Results</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-md-12 -->
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        //getCourses();
+    });
+
+    function getCourses() {
+        var e = document.getElementById("select_semester");
+        var selected_semester = e.options[e.selectedIndex].value;
+
+        var f = document.getElementById("select_faculty");
+        var selected_faculty = f.options[f.selectedIndex].value;
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetCourses")',
+            dataType: 'json',
+            data: 'semester=' + encodeURIComponent(selected_semester) + '&faculty=' + encodeURIComponent(selected_faculty),
+            success: function (data) {
+                $("#select_course_code").empty();
+                debugger;
+                for (var i = 0; i < data.length; i++) {
+                    var opt = new Option(data[i]);
+                    $("#select_course_code").append(opt);
+                }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+    }
+</script>

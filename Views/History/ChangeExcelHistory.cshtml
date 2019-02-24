@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "ChangeExcelHistory";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Change Excel History</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Teacher")"><i class="fa fa-home"></i> Teacher</a></li>
+
+                <li class="active">Change Excel History</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <h4 style="color:red;"> Marks From Current Excel Will Be Replaced With The New Excel </h4>
+                <div class="panel-body p-20">
+                    @if (ViewBag.Id != null)
+                    {
+                        <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                            <input hidden name="id" value="@ViewBag.Id" />
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Select New Excel</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="file" class="form-control" id="file" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" name="submit" class="btn btn-primary">Change marks</button>
+                                </div>
+                            </div>
+                        </form>
+                    }
+
+                    @if (ViewBag.Message != null)
+                    {
+                        <p>@ViewBag.Message</p>
+                    }
+                    <!-- /.col-md-12 -->
+                </div>
+            </div>
+        </div>
+        <!-- /.col-md-6 -->
+    </div>
+    <!-- /.col-md-12 -->
+</div>

@@ -1,0 +1,111 @@
+﻿@model PRMS.Models.Teacher
+@{
+    ViewBag.Title = "Detail Teacher";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Teacher Detail</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i> Admin</a></li>
+                <li> Teachers Corner</li>
+                <li class="active">Teacher Details</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+
+                <div class="panel-body">
+
+
+                    <!--  notification
+                    <div class="alert alert-success left-icon-alert" role="alert">
+                        <strong>Well done!</strong>
+                    </div>
+                    <div class="alert alert-danger left-icon-alert" role="alert">
+                        <strong>Oh snap!</strong>
+                    </div>
+                     -->
+
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Email)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Mobile)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Mobile)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Faculty)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Faculty)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Department)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Department)
+                        </dd>
+
+                        <dt>
+                            <span>      @Html.ActionLink("Edit", "Edit", "Admin", new { id = Model.TeacherID }, new { @class = "btn btn-primary btn-small " }) </span>
+
+                        </dt>
+                        <dd>
+                            <span>
+                                @Html.ActionLink("Delete", "Delete", "Admin", new { id = Model.TeacherID },
+                                                                                            new { onclick = "return confirm('Are you sure you wish to delete this Teacher?');", @class = "btn btn-danger btn-small" })
+                            </span>
+
+                        </dd>
+
+                    </dl>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- /.col-md-12 -->
+    </div>
+</div>
+
+

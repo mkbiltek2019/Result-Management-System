@@ -1,0 +1,162 @@
+﻿
+@{
+    ViewBag.Title = "AddSemesters";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+   
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Add New Semester</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i> Admin</a></li>
+
+                <li class="active">Add Semester</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5>Fill the New Semester info</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+
+
+                    <!--  notification
+                    <div class="alert alert-success left-icon-alert" role="alert">
+                        <strong>Well done!</strong>
+                    </div>
+                    <div class="alert alert-danger left-icon-alert" role="alert">
+                        <strong>Oh snap!</strong>
+                    </div>
+                     -->
+                    <form class="form-horizontal" method="post">
+
+                         
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Faculty</label>
+                            <div class="col-sm-10">
+                                <select name="faculty" class="form-control" id="default" required="required">
+                                    <option value="">Select Class</option>
+                                    <option value="AG">AG</option>
+                                    <option value="CSE">CSE</option>
+                                    <option value="BAM">BAM</option>
+                                    <option value="DM">DM</option>
+                                    <option value="NFS">NFS</option>
+                                    <option value="FIS">FISHERIES</option>
+                                    <option value="DVM">DVM</option>
+                                    <option value="LMA">LMA</option> 
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Faculty</label>
+                            <div class="col-sm-10">
+                                <select name="country" id="country-list" class="demoInputBox" onchange="getState(this.value);">
+                                    <option value="">Select Country</option>
+
+                                    <option value=" "> </option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Faculty</label>
+                            <div class="col-sm-10">
+                                <select name="state" id="state-list" class="demoInputBox">
+                                    <option value="">Select State</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <script>
+                            function getState(val) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "get_state.php",
+                                    data: 'country_id=' + val,
+                                    success: function (data) {
+                                        $("#state-list").html(data);
+                                    }
+                                });
+                            }
+                        </script>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Mobile</label>
+                            <div class="col-sm-10">
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Tutorials
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><option value="AG">AG</option></li>
+                                        <li><a tabindex="-1" href="#">CSS</a></li>
+                                        <li class="dropdown-submenu">
+                                            <a class="test" tabindex="-1" href="#">New dropdown <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
+                                                <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
+
+                                            </ul>
+                                        </li>
+
+                                        <li><a tabindex="-1" href="#">CSS</a></li>
+                                        <li><a tabindex="-1" href="#">CSS</a></li>
+
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+
+      <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.col-md-12 -->
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.dropdown-submenu a.test').on("click", function (e) {
+            $(this).next('ul').toggle();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+    });
+</script>

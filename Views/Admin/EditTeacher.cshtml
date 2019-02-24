@@ -1,0 +1,193 @@
+﻿@model PRMS.Models.Teacher
+@{
+    ViewBag.Title = "Edit Teacher";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Edit Teacher</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i> Admin</a></li>
+                <li> Teachers Corner</li>
+                <li class="active">Edit Teacher</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h5>Fill the Teacher info</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+
+               
+
+                    <form class="form-horizontal" method="post">
+
+
+                        <input type="hidden" name="TeacherID" value="@Model.TeacherID" />
+                                         
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Name<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" name="Name" class="form-control" id="fullanme" placeholder="e.g. @Model.Name" value="@Model.Name" required="required" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Email<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="email" name="Email" class="form-control" id="email" placeholder="e.g. @Model.Email" value="@Model.Email" required="required" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Mobile</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="Mobile" class="form-control" id="rollid" placeholder="e.g. @Model.Mobile" value="@Model.Mobile" autocomplete="off">
+                            </div>
+                        </div>
+                    
+                                  
+
+                        <div class="form-group">
+                            <label for="default" class="col-sm-2 control-label">Faculty<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="faculty" class="form-control" id="select" onchange="getState()" required="required">
+                                    <option value="">Select Faculty</option>
+                                    @{
+                                        foreach (PRMS.Models.Faculty faculty in ViewBag.faculties)
+                                        {
+                                            if (faculty.ShortForm.Equals(Model.Faculty))
+                                            {
+                                                @Html.Raw("<option value='" + faculty.ShortForm + "' selected>" + faculty.FacultyName + "</option>");
+
+                                            }
+                                            else
+                                            {       @Html.Raw("<option value='" + faculty.ShortForm + "'>" + faculty.FacultyName + "</option>");
+
+                                            }
+
+                                        }
+
+
+                                    }
+
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="hiddenDiv">
+                            <label for="default" class="col-sm-2 control-label">Department<span style="color:red;">*</span></label>
+                            <div class="col-sm-10">
+                                <select name="department" class="form-control" id="department" required="required">
+                                    <option value="">Select Department</option>
+                                </select>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.col-md-12 -->
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetDepartment")',
+            dataType: 'json',
+            data: 'faculty=' + '@Model.Faculty',
+            success: function (data) {
+                $("#department").empty();
+                debugger;
+                for (var i = 0; i < data.length; i++) {
+                    var opt = new Option(data[i]);
+                     
+                    $("#department").append(opt);
+                    if (data[i] == '@Model.Department') {
+                    document.getElementById('department').options[i].selected = true;
+                    }
+                    }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+   
+      
+       
+        
+           
+        
+
+
+    });
+
+
+
+
+
+    function getState() {
+        var e = document.getElementById("select");
+        var val = e.options[e.selectedIndex].value;
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetDepartment")',
+            dataType: 'json',
+            data: 'faculty=' + val,
+            success: function (data) {
+                $("#department").empty();
+                debugger;
+                for (var i = 0; i < data.length; i++) {
+                    var opt = new Option(data[i]);
+                    $("#department").append(opt);
+                }
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+       
+
+    }
+</script>

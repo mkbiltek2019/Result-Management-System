@@ -1,0 +1,192 @@
+﻿@model IEnumerable<PRMS.Models.GradeSheetDataModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GradeSheet</title>
+    @Scripts.Render("~/bundles/jquery")
+
+    <style>
+        body {
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .hedding {
+            width: 100%;
+            align-content: center;
+            text-align: center;
+            font-size: 20px;
+        }
+    </style>
+
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row page-title-div">
+            <div class="col-md-6">
+                <h2 class="title">Grade Sheet</h2>
+            </div>
+
+            <!-- /.col-md-6 text-right -->
+        </div>
+        <!-- /.row -->
+        <div class="row breadcrumb-div">
+            <div class="col-md-6">
+                @using (Html.BeginForm("DownloadPdf", "Report", FormMethod.Post))
+                {
+                    <input type="hidden" name="GridHtml" />
+                    <input type="submit" id="btnSubmit" value="Export" />
+                }
+            </div>
+
+        </div>
+        <!-- /.row -->
+    </div>
+
+
+    <div id='htmlContent'>
+        <div class='container-fluid'>
+            <div class='row'>
+                <div class='col-md-12'>
+                    <div class='panel'>
+
+
+                        @{foreach (PRMS.Models.GradeSheetDataModel gradeSheet in Model)
+                        {
+                            string hedding = gradeSheet.Semester.ToString();
+
+                            switch (gradeSheet.Semester)
+                            {
+                                case 1: hedding += "st Semester (Level-1 Semester-I)Final Examination of B.Sc.  (" + gradeSheet.Faculty + ")Jan-June-"; break;
+                                case 2: hedding += "nd Semester (Level-1 Semester-II)Final Examination of B.Sc. (" + gradeSheet.Faculty + ")Jan-June-"; break;
+                                case 3: hedding += "rd Semester (Level-2 Semester-I)Final Examination of B.Sc.  (" + gradeSheet.Faculty + ")Jan-June-"; break;
+                                case 4: hedding += "th Semester (Level-2 Semester-II)Final Examination of B.Sc. (" + gradeSheet.Faculty + ")Jan-June-"; break;
+                                case 5: hedding += "th Semester (Level-3 Semester-I)Final Examination of B.Sc.  (" + gradeSheet.Faculty + ")Jan-June-"; break;
+                                case 6: hedding += "th Semester (Level-3 Semester-II)Final Examination of B.Sc. (" + gradeSheet.Faculty + ")Jan-June-"; break;
+                                case 7: hedding += "th Semester (Level-4 Semester-I)Final Examination of B.Sc.  (" + gradeSheet.Faculty + ")Jan-June-"; break;
+                                case 8: hedding += "th Semester (Level-4 Semester-II)Final Examination of B.Sc.  (" + gradeSheet.Faculty + ")Jan-June-"; break;
+                                case 9: hedding += "th Semester (Level-5 Semester-I)Final Examination of B.Sc.  (" + gradeSheet.Faculty + ")Jan-June-"; break;
+                            }
+                            hedding += gradeSheet.Session.Substring(0, 4);
+
+                            <div style='width: 100%; height:10%;  text-align: center; align-content: center; font-size: 12px;'> <p>@hedding</p></div>
+                            <br />    
+
+                            <table id='table' border='1' class='display table table-striped table-bordered' cellspacing='0' style='font-size:10px; width:100%;'>
+                                <thead>
+
+                                    <tr>
+                                        <th height='30px' align='left' colspan='4'>Name of The Student: @gradeSheet.Name</th>
+                                        <th height='30px' align='left' colspan='3'>Reg. No. @gradeSheet.RegNo</th>
+                                        <th height='30px' align='left' colspan='3'>Session: @gradeSheet.Session</th>
+                                        <th height='30px' align='left' colspan='2'>Exam. Roll No. @gradeSheet.StudentId</th>
+
+                                    </tr>
+                                    <tr>
+                                        <th height='60' width='35' align='center'>SL No</th>
+                                        <th height='60' width='120' align='center'>Course Code</th>
+                                        <th height='60' width='400' align='center'>Course Title</th>
+                                        <th height='60' width='75' align='center'>Cradit Hours (CH)</th>
+                                        <th height='60' width='75' align='center'>Letter Grade</th>
+                                        <th height='60' width='75' align='center'>GP</th>
+                                        <th height='60' width='75' align='center'>GPA</th>
+                                        <th height='60' width='75' align='center'>Previous CGPA</th>
+                                        <th height='60' width='75' align='center'>Previous CCH</th>
+                                        <th height='60' width='75' align='center'>CGPA</th>
+                                        <th height='60' width='75' align='center'>CCH</th>
+                                        <th height='60' width='200' align='center'>Remarks</th>
+
+                                    </tr>
+                                    <tr>
+                                        @{for (int j = 1; j < 13; j++)
+                                        {
+                                            <td align='center'>@j</td>
+                                        }
+                                        }
+
+                                    </tr>
+                                </thead>
+                                <tbody id='tablebody'>
+                                    @{int i = 0; foreach (PRMS.Models.CourseResult courseResult in gradeSheet.CourseResults)
+                                    {
+                                        i++;
+
+
+
+                                        <tr>
+                                            <td align='center'>@i</td>
+                                            <td align='center'>@courseResult.CourseCode.Replace("_","-")</td>
+                                            <td align='left'>@courseResult.CourseTitle</td>
+                                            <td align='center'>@courseResult.CreditHours</td>
+                                            <td align='center'>@courseResult.LetterGrade</td>
+                                            <td align='center'>@courseResult.GP</td>
+                                            @{if (i == 1)
+                                            {
+                                                <td rowspan='@gradeSheet.CourseResults.Count' align='center'>@gradeSheet.GPA</td>
+                                                <td rowspan='@gradeSheet.CourseResults.Count' align='center'>@gradeSheet.PrevCGPA</td>
+                                                <td rowspan='@gradeSheet.CourseResults.Count' align='center'>@gradeSheet.PrevCCH</td>
+                                                <td rowspan='@gradeSheet.CourseResults.Count' align='center'>@gradeSheet.CGPA</td>
+                                                <td rowspan='@gradeSheet.CourseResults.Count' align='center'>@gradeSheet.CCH</td>
+
+                                                string remark = "";
+                                                if (gradeSheet.Remarks.Length > 0) { remark = "F in "; }
+                                                else { remark = "Passed "; }
+
+                                                for (int l = 0; l < gradeSheet.Remarks.Length; l++)
+                                                {
+                                                    remark += gradeSheet.Remarks[l];
+                                                    if (gradeSheet.Remarks[l].Equals(',')) { remark += " "; }
+                                                }
+
+
+                                                <td rowspan='@gradeSheet.CourseResults.Count' style=' width:200px;' align='center'>@remark</td>
+
+
+                                            }
+                                            }
+                                        </tr>
+                                    }
+                                    }
+
+                                </tbody>
+
+
+                            </table>
+
+                            <br />
+                            <br />
+                                   
+                            <newpage />
+                        <div style='page-break-before:always;'><u>&nbsp;</u></div>
+                            
+                        }
+                        }
+
+
+                    </div>
+                </div>
+                <!-- /.col-md-12 -->
+            </div>
+        </div>
+    </div>
+
+    <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
+    <script type="text/javascript">
+        $(function () {
+            $("#btnSubmit").click(function () {
+                $("input[name='GridHtml']").val($("#htmlContent").html());
+            });
+        });
+    </script>
+</body>
+</html>

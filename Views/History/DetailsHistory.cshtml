@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "DetailsHistory";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+
+}
+<script>
+    var mode = 'CSE';
+</script>
+
+
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Details History</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Teacher")"><i class="fa fa-home"></i> Teacher</a></li>
+
+                <li class="active">Details History</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h3>
+                        @if(ViewBag.Course != null)
+                        {
+                            <strong>Course Code: @ViewBag.Course</strong>
+                        }
+                        else 
+                        {
+                            <strong>No History Found For This Entry</strong>
+                        }
+                        </h3>
+                    </div>
+                </div>
+
+                @{
+                    if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger left-icon-alert" role="alert">
+                            <strong>@ViewBag.Error</strong>
+                        </div>
+                    }
+                    else if (ViewBag.Message != null)
+                    {
+                        <div class="alert alert-success left-icon-alert" role="alert">
+                            <strong>@ViewBag.Message</strong>
+                        </div>
+                    }
+                }
+                @if (ViewBag.id != null)
+                {
+                    if (ViewBag.Approved)
+                    {
+                        <span>Approved</span>
+                    }
+                    else
+                    {
+                        if (ViewBag.Marks != null)
+                        {
+                            <span>@Html.ActionLink("Change Excel", "ChangeHistory", "History", new { id = ViewBag.id }, new { @class = "btn btn-primary btn-small " }) </span>
+                            <span>
+                                @Html.ActionLink("Delete All", "DeleteMarksFromExcel", "History", new { id = ViewBag.id, dest = 0 },
+                                                                                                    new { onclick = "return confirm('Are you sure you wish to delete all?');", @class = "btn btn-danger btn-small" })
+                            </span>
+                        }
+                    }
+                }
+
+                <table id="table" name="table" class="display table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Reg</th>
+                            <th>Attendence</th>
+                            <th>Assignment</th>
+                            <th>Mid</th>
+                            <th>Final</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Reg</th>
+                            <th>Attendence</th>
+                            <th>Assignment</th>
+                            <th>Mid</th>
+                            <th>Final</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody id="tablebody">
+                        @if (ViewBag.Marks != null)
+                        {
+                            foreach (var item in ViewBag.Marks)
+                            {
+                                <tr>
+                                    @if (item != null)
+                                    {
+                                        <td>@item.StudentId</td>
+                                        <td>@item.RegNo</td>
+                                        <td>@item.Attendence</td>
+                                        <td>@item.Assignment</td>
+                                        <td>@item.Mid</td>
+                                        <td>@item.Final</td>
+                                        <td>
+                                            @if (!item.Submitted)
+                                            {
+                                                <span>@Html.ActionLink("Edit", "EditMark", "Marks", new { stuId = item.StudentId, faculty = ViewBag.Faculty, course_code = ViewBag.Course, dest = 1, activityId = ViewBag.ActivityId }, new { @class = "btn btn-primary btn-small " }) </span>
+                                                <span>
+                                                    @Html.ActionLink("Delete", "DeleteMark", "Marks", new { stuId = item.StudentId, faculty = ViewBag.Faculty, course_code = ViewBag.Course, dest = 1, activityId = ViewBag.ActivityId },
+                                                                                                new { onclick = "return confirm('Are you sure you wish to delete this Mark?');", @class = "btn btn-danger btn-small" })
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span>Submitted</span>
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.col-md-6 -->
+</section>

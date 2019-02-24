@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewBag.Title = "ChangeMark";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <div class="row page-title-div">
+        <div class="col-md-6">
+            <h2 class="title">Change Mark</h2>
+
+        </div>
+
+        <!-- /.col-md-6 text-right -->
+    </div>
+    <!-- /.row -->
+    <div class="row breadcrumb-div">
+        <div class="col-md-6">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Teacher")"><i class="fa fa-home"></i> Teacher</a></li>
+
+                <li class="active">Change Mark</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    @{
+                        if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger left-icon-alert" role="alert">
+                                <strong>@ViewBag.ErrorMessage</strong>
+                            </div>
+                        }
+                        else if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success left-icon-alert" role="alert">
+                                <strong>@ViewBag.Message</strong>
+                            </div>
+                        }
+                    }
+
+                    <div class="panel-title">
+                        <h5>Change mark info carefully</h5>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    @if(ViewBag.Mark != null)
+                    {
+                        <form class="form-horizontal" method="post">
+                            <input hidden name="faculty" value="@ViewBag.Faculty" />
+                            <input hidden name="course_code" value="@ViewBag.Course_code" />
+                            <input hidden name="dest" value="@ViewBag.Dest" />
+                            <input hidden name="activityId" value="@ViewBag.ActivityId" />
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Id</label>
+                                <div class="col-sm-6">
+                                    <input type="number" name="StudentId" class="form-control" id="StudentId" value="@ViewBag.Mark.StudentId" required="required" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Reg</label>
+                                <div class="col-sm-6">
+                                    <input type="number" name="RegNo" class="form-control" id="RegNo" value="@ViewBag.Mark.RegNo" required="required" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Mid</label>
+                                <div class="col-sm-6">
+                                    <input type="number" min="-1" max="15" name="Mid" class="form-control" id="Mid" value="@ViewBag.Mark.Mid" required="required" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Attendance</label>
+                                <div class="col-sm-6">
+                                    <input type="number" min="-1" max="10" name="Attendence" class="form-control" id="Attendence" value="@ViewBag.Mark.Attendence" required="required" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Assignment</label>
+                                <div class="col-sm-6">
+                                    <input type="number" min="-1" max="5" name="Assignment" class="form-control" id="Assignment" value="@ViewBag.Mark.Assignment" required="required" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="default" class="col-sm-2 control-label">Final</label>
+                                <div class="col-sm-6">
+                                    <input type="number" min="-1" max="70" name="Final" class="form-control" id="Final" value="@ViewBag.Mark.Final" required="required" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" name="submit" class="btn btn-primary">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                    }
+
+                </div>
+            </div>
+        </div>
+        <!-- /.col-md-12 -->
+    </div>
+</div>
