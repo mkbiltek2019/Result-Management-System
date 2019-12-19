@@ -6,13 +6,8 @@ using System.Web;
 
 namespace PRMS.Models
 {
-    public class ProjectDB : DbContext
+    public class ProjectDB : ApplicationDbContext
     {
-        public ProjectDB()
-            : base("prmsDbConnectionString")
-        {
-        }
-
         public DbSet<Teacher> Teacher { set; get; }
         public DbSet<StudentInfo> StudentInfo { set; get; }
         public DbSet<Faculty> Faculty { set; get; }
