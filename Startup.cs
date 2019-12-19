@@ -1,7 +1,7 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(PRMS.Startup))]
+[assembly: OwinStartup(typeof(PRMS.Startup))]
 namespace PRMS
 {
     public partial class Startup
